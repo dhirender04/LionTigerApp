@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -15,6 +17,9 @@ public class MainActivity extends AppCompatActivity {
     Player currentPlayer =Player.ONE;
     Player[] playerChoice=new Player[9];
     int[][] winnerRowsColumns={{0,1,2},{3,4,5},{6,7,8},{0,3,6},{1,4,7},{2,5,8},{0,4,8},{2,4,6}};
+    private Boolean gameOver=false;
+    private Button btnReset;
+    private GridLayout gridLayout;
 
 
 
@@ -33,6 +38,17 @@ public class MainActivity extends AppCompatActivity {
         playerChoice[7]=Player.NO;
         playerChoice[8]=Player.NO;
 
+        btnReset=findViewById(R.id.btnReset);
+        gridLayout=findViewById(R.id.grid);
+
+        btnReset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resetTheGame();
+
+            }
+        });
+
 
 
 
@@ -42,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     public void imageViewIsTapped(View imageView) {
         ImageView tappedImageView = (ImageView) imageView;
         int tiTag = Integer.parseInt(imageView.getTag().toString());
-        if (playerChoice[tiTag] == Player.NO) {
+        if (playerChoice[tiTag] == Player.NO && gameOver==false) {
             tappedImageView.setTranslationX(-2000);
 
             playerChoice[tiTag] = currentPlayer;
@@ -64,6 +80,8 @@ public class MainActivity extends AppCompatActivity {
                 if (playerChoice[winnerColumns[0]] == playerChoice[winnerColumns[1]]
                         && playerChoice[winnerColumns[1]] == playerChoice[winnerColumns[2]]
                         && playerChoice[winnerColumns[0]] != Player.NO) {
+                    btnReset.setVisibility(View.VISIBLE);
+                    gameOver=true;
 
                     String winnerOfGame = "";
                     if (currentPlayer == Player.ONE) {
@@ -80,5 +98,30 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    private void resetTheGame(){
+        for(int index=0;index<gridLayout.getChildCount();index++ ){
+
+            ImageView imageView=(ImageView) gridLayout.getChildAt(index);
+            imageView.setImageDrawable(null);
+            imageView.setAlpha(0.2f);
+
+        }
+        currentPlayer =Player.ONE;
+
+        playerChoice[0]=Player.NO;
+        playerChoice[1]=Player.NO;
+        playerChoice[2]=Player.NO;
+        playerChoice[3]=Player.NO;
+        playerChoice[4]=Player.NO;
+        playerChoice[5]=Player.NO;
+        playerChoice[6]=Player.NO;
+        playerChoice[7]=Player.NO;
+        playerChoice[8]=Player.NO;
+
+        gameOver=false;
+
+
     }
 }

@@ -39,33 +39,45 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void imageViewIsTapped(View imageView){
-        ImageView tappedImageView=(ImageView) imageView;
-        tappedImageView.setTranslationX(-2000);
-        int tiTag=Integer.parseInt(imageView.getTag().toString());
-        playerChoice[tiTag]=currentPlayer;
-        if(currentPlayer==Player.ONE) {
-            tappedImageView.setImageResource(R.drawable.lion);
-            currentPlayer=Player.TWO;
+    public void imageViewIsTapped(View imageView) {
+        ImageView tappedImageView = (ImageView) imageView;
+        int tiTag = Integer.parseInt(imageView.getTag().toString());
+        if (playerChoice[tiTag] == Player.NO) {
+            tappedImageView.setTranslationX(-2000);
+
+            playerChoice[tiTag] = currentPlayer;
+            if (currentPlayer == Player.ONE) {
+                tappedImageView.setImageResource(R.drawable.lion);
+                currentPlayer = Player.TWO;
 
 
-        }else if(currentPlayer==Player.TWO){
-            tappedImageView.setImageResource(R.drawable.tiger);
+            } else if (currentPlayer == Player.TWO) {
+                tappedImageView.setImageResource(R.drawable.tiger);
 
-            currentPlayer=Player.ONE;
+                currentPlayer = Player.ONE;
 
-        }
-        tappedImageView.animate().translationXBy(2000).alpha(1).rotation(3600).setDuration(1000);
-        Toast.makeText(this, tappedImageView.getTag().toString(), Toast.LENGTH_SHORT).show();
+            }
+            tappedImageView.animate().translationXBy(2000).alpha(1).rotation(3600).setDuration(1000);
+            Toast.makeText(this, tappedImageView.getTag().toString(), Toast.LENGTH_SHORT).show();
 
-        for(int[] winnerColumns : winnerRowsColumns){
-            if(playerChoice[winnerColumns[0]]==playerChoice[winnerColumns[1]]
-                   && playerChoice[winnerColumns[1]]==playerChoice[winnerColumns[2]]
-                    && playerChoice[winnerColumns[0]] != Player.NO){
+            for (int[] winnerColumns : winnerRowsColumns) {
+                if (playerChoice[winnerColumns[0]] == playerChoice[winnerColumns[1]]
+                        && playerChoice[winnerColumns[1]] == playerChoice[winnerColumns[2]]
+                        && playerChoice[winnerColumns[0]] != Player.NO) {
 
-                Toast.makeText(this,"You Are The Winner Of The Chicken Dinner", Toast.LENGTH_SHORT).show();
+                    String winnerOfGame = "";
+                    if (currentPlayer == Player.ONE) {
+                        //Toast.makeText(this, "Player TWO", Toast.LENGTH_SHORT).show();
+                        winnerOfGame = "Player Two";
+                    } else if (currentPlayer == Player.TWO) {
+                        //Toast.makeText(this, "Player ONE", Toast.LENGTH_SHORT).show();
+                        winnerOfGame = "Player One";
+                    }
+
+                    Toast.makeText(this, winnerOfGame + "  are winner winner Chicken Dinner", Toast.LENGTH_SHORT).show();
 
 
+                }
             }
         }
     }
